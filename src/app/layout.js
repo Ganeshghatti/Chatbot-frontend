@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
       </head>
       <body
-        className={`${host_Grotesk.className}  antialiased`}
+        className={`${host_Grotesk.className}  antialiased overflow-x-hidden`}
       >
         {children}
       </body>

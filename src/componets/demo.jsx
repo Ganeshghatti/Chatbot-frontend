@@ -32,7 +32,7 @@ const DemoSection = () => {
           {/* Chat Interface using Chatbot Component */}
           <div className="lg:w-1/2 order-2 lg:order-1 animate__animated animate__fadeInUp">
             <Chatbot
-              companyId="social_hardware_159183"
+              companyId="the_squirrel_511912"
               initialMessages={initialMessages}
               demoQuestions={[]}
               title="Live Demo Bot"

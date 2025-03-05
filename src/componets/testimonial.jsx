@@ -21,7 +21,7 @@ const TestimonialsSection = () => {
       role: "Marketing Lead",
       company: "TravelEasy Agency",
       quote: "The multi-channel support feature is a game-changer. Our customers can now book trips via WhatsApp or our website with the same seamless experience. Fantastic support too!",
-      rating: 4.5
+      rating: 5
     }
   ];
 

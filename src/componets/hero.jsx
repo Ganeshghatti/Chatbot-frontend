@@ -41,7 +41,7 @@ const HeroSection = () => {
           {/* Right Column - Chatbot Preview */}
           <div className="md:w-1/2 flex justify-center relative animate__animated animate__fadeInRight">
             <Chatbot
-              companyId="demo_company_123"
+              companyId="the_squirrel_511912"
               initialMessages={initialMessages}
               demoQuestions={demoQuestions}
               title="Ask Squirrel Bot"

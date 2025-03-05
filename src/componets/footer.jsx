@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, Linkedin, Twitter } from 'lucide-react';
+import { FaXTwitter } from "react-icons/fa6";
 import Logo from './logo';
 
 const Footer = () => {
@@ -26,7 +27,7 @@ const Footer = () => {
                 className="bg-neutral-700 p-2 rounded-full hover:bg-accent transition duration-300"
                 aria-label="Follow us on Twitter"
               >
-                <Twitter className="h-5 w-5 text-white" />
+                <FaXTwitter className="h-5 w-5 text-white" />
               </a>
             </div>
           </div>
