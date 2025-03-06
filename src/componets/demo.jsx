@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Chatbot from './chatbot';
 
 const DemoSection = () => {
+const [externalMsg, setExternalMsg] = useState(null)
+
   const initialMessages = [
     {
       text: "👋 Hi there! I'm the Squirrel demo bot. I can help you learn about our chatbot services. What would you like to know?",
@@ -30,12 +32,14 @@ const DemoSection = () => {
 
         <div className="flex flex-col lg:flex-row items-center justify-center gap-10 lg:gap-16">
           {/* Chat Interface using Chatbot Component */}
-          <div className="lg:w-1/2 order-2 lg:order-1 animate__animated animate__fadeInUp">
+          <div className="lg:w-1/2 order-2 lg:order-1 animate__animated animate__fadeInUp flex items-center justify-end">
             <Chatbot
               companyId="the_squirrel_511912"
               initialMessages={initialMessages}
               demoQuestions={[]}
               title="Live Demo Bot"
+              setExternalMsg={setExternalMsg}
+              externalMsg={externalMsg}
             />
           </div>
 
@@ -47,7 +51,7 @@ const DemoSection = () => {
                 {demoQuestions.map((question, index) => (
                   <li key={index}>
                     <button
-                      // onClick={() => document.getElementById(`chat-messages-social_hardware_159183`).parentElement.querySelector('button').click(question)} // Simplified for demo; ideally handled by Chatbot
+                      onClick={() => setExternalMsg(question)}
                       className="demo-question bg-neutral-800 hover:bg-neutral-700 p-3 rounded-lg w-full text-left text-gray-300 hover:text-white transition duration-300 border-l-4 border-accent"
                     >
                       {question}
@@ -60,7 +64,7 @@ const DemoSection = () => {
         </div>
 
         <div className="text-center mt-16 animate__animated animate__fadeIn">
-          <a href="#services" className="inline-flex items-center text-accent font-semibold hover:text-white transition duration-300">
+          <a href="#pricing" className="inline-flex items-center text-accent font-semibold hover:text-white transition duration-300">
             Learn more about our services
             <svg
               xmlns="http://www.w3.org/2000/svg"

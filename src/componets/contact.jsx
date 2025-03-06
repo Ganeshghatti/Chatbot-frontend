@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Linkedin, Twitter, Send } from 'lucide-react';
+import { Mail, Phone, Linkedin, Twitter, Send, Check } from 'lucide-react';
 import { FaXTwitter } from "react-icons/fa6";
 
 const ContactSection = () => {

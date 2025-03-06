@@ -3,7 +3,7 @@ import { Package, Code, Check, Clock, DollarSign, Zap, BarChart, Layers, Message
 
 const ServicesSection = () => {
   return (
-    <section id="services" className="bg-neutral-900 py-20">
+    <section id="pricing" className="bg-neutral-900 py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -43,7 +43,7 @@ const ServicesSection = () => {
               ))}
             </div>
             <div className="mt-auto">
-              <a href="#readymade" className="inline-block bg-neutral-700 hover:bg-accent text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+              <a href="#contact" className="inline-block bg-neutral-700 hover:bg-accent text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                 Learn More
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1 inline" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -78,7 +78,7 @@ const ServicesSection = () => {
               ))}
             </div>
             <div className="mt-auto">
-              <a href="#custom" className="inline-block bg-accent hover:bg-[#e05a00] text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+              <a href="#contact" className="inline-block bg-accent hover:bg-[#e05a00] text-white font-bold py-3 px-6 rounded-lg transition duration-300">
                 Learn More
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1 inline" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -143,7 +143,7 @@ const ServicesSection = () => {
 
         {/* CTA */}
         <div className="text-center mt-16">
-          <a href="#readymade" className="inline-block bg-accent hover:bg-[#e05a00] text-white font-bold py-3 px-8 rounded-lg transition duration-300 animate__animated animate__pulse animate__infinite animate__slower">
+          <a href="#contact" className="inline-block bg-accent hover:bg-[#e05a00] text-white font-bold py-3 px-8 rounded-lg transition duration-300 animate__animated animate__pulse animate__infinite animate__slower">
             Explore Our Chatbot Options
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 inline" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />

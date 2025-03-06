@@ -13,7 +13,6 @@ import React from 'react'
 const Home = () => {
   return (
     <>
-    <Header/>
     <HeroSection/>
     <DemoSection/>
     <ServicesSection/>
@@ -21,7 +20,6 @@ const Home = () => {
     <FAQSection/>
     <TestimonialsSection/>
     <ContactSection/>
-    <Footer/>
     </>
   )
 }

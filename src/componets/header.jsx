@@ -36,8 +36,8 @@ const Header = () => {
             <a href="#demo" className="hover:text-accent transition duration-300">
               Demo
             </a>
-            <a href="#services" className="hover:text-accent transition duration-300">
-              Services
+            <a href="#pricing" className="hover:text-accent transition duration-300">
+              Pricing
             </a>
            
             <a href="#faq" className="hover:text-accent transition duration-300">
@@ -90,15 +90,11 @@ const Header = () => {
             <a href="#demo" className="hover:text-accent transition duration-300">
               Demo
             </a>
-            <a href="#services" className="hover:text-accent transition duration-300">
-              Services
-            </a>
+            
             <a href="#readymade" className="hover:text-accent transition duration-300">
               Ready-Made
             </a>
-            <a href="#custom" className="hover:text-accent transition duration-300">
-              Custom
-            </a>
+            
             <a href="#pricing" className="hover:text-accent transition duration-300">
               Pricing
             </a>
