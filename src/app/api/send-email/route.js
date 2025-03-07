@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const { name, email, message } = await request.json();
-console.log(name, email, message)
+
   const mailOptions = {
-    from: email,
-    to: process.env.HOST_GMAIL,
+    from: process.env.EMAIL_USERNAME,
+    to: process.env.HOST_EMAIL,
     subject: `Contact Form Submission from ${name}`,
     html: ` <!DOCTYPE html>
     <html lang="en">

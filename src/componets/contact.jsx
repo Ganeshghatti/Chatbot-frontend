@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Linkedin, Twitter, Send, Check } from 'lucide-react';
+import { Mail, Phone, Linkedin, Twitter, Send, Check, Loader2 } from 'lucide-react';
 import { FaXTwitter } from "react-icons/fa6";
 
 const ContactSection = () => {
@@ -9,6 +9,7 @@ const ContactSection = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleChange = (e) => {
@@ -23,8 +24,11 @@ const ContactSection = () => {
       return;
     }
 
+    setIsLoading(true);
+    setError('');
+
     try {
-      const response = await fetch('/api/send-email', { // Replace with your server endpoint
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,11 +41,12 @@ const ContactSection = () => {
       }
 
       setIsSubmitted(true);
-      setError('');
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (err) {
       setError('Something went wrong. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -171,10 +176,20 @@ const ContactSection = () => {
                   {error && <p className="text-red-400 text-sm">{error}</p>}
                   <button
                     type="submit"
-                    className="w-full bg-accent hover:bg-[#e05a00] text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center"
+                    disabled={isLoading}
+                    className="w-full bg-accent hover:bg-[#e05a00] text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    Send Message
-                    <Send className="h-5 w-5 ml-2" />
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="h-5 w-5 ml-2" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
