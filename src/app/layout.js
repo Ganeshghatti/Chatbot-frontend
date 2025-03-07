@@ -14,6 +14,10 @@ export const metadata = {
   keywords:
     "chatbot solutions, AI chatbots, custom chatbots, ready-made chatbots, business automation, customer engagement, The Squirrel",
   authors: [{ name: "The Squirrel Team" }],
+  icons: {
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -24,6 +28,8 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
         />
+        <link rel="icon" href="/logo.png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body
         className={`${host_Grotesk.className}  antialiased overflow-x-hidden`}
