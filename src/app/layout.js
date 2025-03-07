@@ -2,6 +2,7 @@ import { Host_Grotesk } from "next/font/google";
 import "./globals.css";
 import Header from "@/componets/header";
 import Footer from "@/componets/footer";
+import Script from "next/script";
 
 const host_Grotesk = Host_Grotesk({
   subsets: ["latin"],
@@ -37,6 +38,20 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="md:px-3 bg-neutral-900">{children}</main>
         <Footer />
+        
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-1RZYJ263TQ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-1RZYJ263TQ');
+          `}
+        </Script>
       </body>
     </html>
   );
