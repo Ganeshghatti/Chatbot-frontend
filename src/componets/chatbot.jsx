@@ -13,9 +13,10 @@ const Chatbot = ({
   const [userInput, setUserInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [quickQuestions, setQuickQuestions] = useState(demoQuestions);
-  const chatContainerRef = useRef(null); // Add ref for chat container
+  const [streamingMessage, setStreamingMessage] = useState("");
+  const chatContainerRef = useRef(null);
 
-  // Function to send message to the real API
+  // Function to send message to the API with streaming support
   const sendMessageToAPI = async (message) => {
     const payload = {
       company_id: companyId,
@@ -27,6 +28,7 @@ const Chatbot = ({
     };
 
     try {
+      // Set up streaming response handling
       const response = await fetch("https://api.chat.thesquirrel.site/chat", {
         method: "POST",
         headers: {
@@ -39,8 +41,39 @@ const Chatbot = ({
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json();
-      return data.response || "Sorry, I couldn't process that request.";
+      // Get the response as a readable stream
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      setStreamingMessage(""); // Reset streaming message
+
+      let fullResponse = "";
+      
+      // Process the stream
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        // Decode the chunk
+        const chunk = decoder.decode(value, { stream: true });
+        
+        // Process each line in the chunk (SSE format)
+        const lines = chunk.split('\n');
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const jsonData = JSON.parse(line.substring(6));
+              if (jsonData.chunk !== undefined) {
+                fullResponse += jsonData.chunk;
+                setStreamingMessage(fullResponse);
+              }
+            } catch (e) {
+              console.error("Error parsing JSON from stream:", e);
+            }
+          }
+        }
+      }
+      
+      return fullResponse || "Sorry, I couldn't process that request.";
     } catch (error) {
       console.error("API Error:", error);
       return "Sorry, there was an issue connecting to the chat service. Please try again later.";
@@ -57,8 +90,21 @@ const Chatbot = ({
     setIsTyping(true);
     setUserInput("");
 
+    // Add a temporary streaming message container
+    setMessages((prev) => [...prev, { text: "", isBot: true, isStreaming: true }]);
+
     const botResponse = await sendMessageToAPI(inputTxt);
-    setMessages((prev) => [...prev, { text: botResponse, isBot: true }]);
+    
+    // Replace the streaming message with the final response
+    setMessages((prev) => 
+      prev.map((msg, idx) => 
+        idx === prev.length - 1 && msg.isStreaming 
+          ? { text: botResponse, isBot: true, isStreaming: false } 
+          : msg
+      )
+    );
+    
+    setStreamingMessage("");
     setIsTyping(false);
   };
 
@@ -70,8 +116,21 @@ const Chatbot = ({
 
     setQuickQuestions((prev) => prev.filter((q) => q !== question));
 
+    // Add a temporary streaming message container
+    setMessages((prev) => [...prev, { text: "", isBot: true, isStreaming: true }]);
+
     const botResponse = await sendMessageToAPI(question);
-    setMessages((prev) => [...prev, { text: botResponse, isBot: true }]);
+    
+    // Replace the streaming message with the final response
+    setMessages((prev) => 
+      prev.map((msg, idx) => 
+        idx === prev.length - 1 && msg.isStreaming 
+          ? { text: botResponse, isBot: true, isStreaming: false } 
+          : msg
+      )
+    );
+    
+    setStreamingMessage("");
     setIsTyping(false);
   };
 
@@ -86,7 +145,7 @@ const Chatbot = ({
     // Use a small timeout to ensure DOM is updated
     const timer = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timer);
-  }, [messages, isTyping]); // Remove externalMsg from dependencies
+  }, [messages, isTyping, streamingMessage]); // Add streamingMessage to dependencies
 
   useEffect(() => {
     if (externalMsg) {
@@ -110,7 +169,7 @@ const Chatbot = ({
 
       {/* Chat Messages */}
       <div
-        ref={chatContainerRef} // Add ref here
+        ref={chatContainerRef}
         id={`chat-messages-${companyId}`}
         className="space-y-4 mb-6 h-64 overflow-y-auto px-2"
       >
@@ -122,10 +181,14 @@ const Chatbot = ({
                 ? "bg-neutral-700 rounded-tl-none"
                 : "bg-accent rounded-tr-none ml-auto"
             }`}
-            dangerouslySetInnerHTML={{ __html: markdown.toHTML(message.text) }}
+            dangerouslySetInnerHTML={{ 
+              __html: message.isStreaming && index === messages.length - 1
+                ? markdown.toHTML(streamingMessage)
+                : markdown.toHTML(message.text) 
+            }}
           />
         ))}
-        {isTyping && (
+        {isTyping && !streamingMessage && (
           <div className="bg-neutral-700 p-3 rounded-lg rounded-tl-none max-w-[80%] flex space-x-1">
             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
             <div
@@ -170,7 +233,8 @@ const Chatbot = ({
         />
         <button
           onClick={sendMessage}
-          className="ml-2 bg-accent p-2 rounded-lg hover:bg-[#e05a00] transition duration-300"
+          className="ml-2 bg-accent p-2 rounded-lg hover:bg-[#e05a00] transition duration-300 cursor-pointer"
+          disabled={isTyping}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
