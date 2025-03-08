@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
-import { Mail, Phone, Linkedin, Twitter, Send, Check, Loader2 } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Mail,
+  Phone,
+  Linkedin,
+  Twitter,
+  Send,
+  Check,
+  Loader2,
+} from "lucide-react";
 import { FaXTwitter } from "react-icons/fa6";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
+    name: "",
+    email: "",
+    message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,38 +28,38 @@ const ContactSection = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
-      setError('Please fill in all required fields.');
+      setError("Please fill in all required fields.");
       return;
     }
 
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
+      const response = await fetch("/api/send-email", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        throw new Error("Failed to send message");
       }
 
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: "", email: "", message: "" });
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch (err) {
-      setError('Something went wrong. Please try again later.');
+      setError("Something went wrong. Please try again later.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <section id="contact" className="bg-neutral-900 py-20">
+    <section id="contact" className="bg-neutral-900 py-20 overflow-x-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
@@ -59,7 +67,8 @@ const ContactSection = () => {
             Contact <span className="text-accent">Us</span>
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto text-lg animate__animated animate__fadeIn">
-            Ready to enhance your customer experience with a chatbot? Get in touch with us today!
+            Ready to enhance your customer experience with a chatbot? Get in
+            touch with us today!
           </p>
         </div>
 
@@ -75,10 +84,16 @@ const ContactSection = () => {
                 <Mail className="h-6 w-6 text-accent mr-4 mt-1" />
                 <div>
                   <p className="text-white font-semibold">Email Us</p>
-                  <a href="mailto:info@thesquirrel.site" className="text-gray-300 hover:text-accent transition duration-300 block">
+                  <a
+                    href="mailto:info@thesquirrel.site"
+                    className="text-gray-300 hover:text-accent transition duration-300 block"
+                  >
                     info@thesquirrel.site
                   </a>
-                  <a href="mailto:hello@ganeshghatti.in" className="text-gray-300 hover:text-accent transition duration-300 block">
+                  <a
+                    href="mailto:hello@ganeshghatti.in"
+                    className="text-gray-300 hover:text-accent transition duration-300 block"
+                  >
                     hello@ganeshghatti.in
                   </a>
                 </div>
@@ -87,7 +102,10 @@ const ContactSection = () => {
                 <Phone className="h-6 w-6 text-accent mr-4 mt-1" />
                 <div>
                   <p className="text-white font-semibold">Call Us</p>
-                  <a href="tel:+919449610077" className="text-gray-300 hover:text-accent transition duration-300">
+                  <a
+                    href="tel:+919449610077"
+                    className="text-gray-300 hover:text-accent transition duration-300"
+                  >
                     +91 94496 10077
                   </a>
                 </div>
@@ -96,7 +114,9 @@ const ContactSection = () => {
 
             {/* Social Links */}
             <div className="mt-8">
-              <h4 className="text-xl font-semibold text-white mb-4">Follow Us</h4>
+              <h4 className="text-xl font-semibold text-white mb-4">
+                Follow Us
+              </h4>
               <div className="flex space-x-4">
                 <a
                   href="https://www.linkedin.com/company/the-squirrel-site"
@@ -124,13 +144,18 @@ const ContactSection = () => {
             {isSubmitted ? (
               <div className="text-center py-8">
                 <Check className="h-12 w-12 text-accent mx-auto mb-4" />
-                <p className="text-white text-lg">Thank you! We'll get back to you soon.</p>
+                <p className="text-white text-lg">
+                  Thank you! We'll get back to you soon.
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-white font-semibold mb-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-white font-semibold mb-2"
+                    >
                       Name <span className="text-accent">*</span>
                     </label>
                     <input
@@ -145,7 +170,10 @@ const ContactSection = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-white font-semibold mb-2">
+                    <label
+                      htmlFor="email"
+                      className="block text-white font-semibold mb-2"
+                    >
                       Email <span className="text-accent">*</span>
                     </label>
                     <input
@@ -160,7 +188,10 @@ const ContactSection = () => {
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-white font-semibold mb-2">
+                    <label
+                      htmlFor="message"
+                      className="block text-white font-semibold mb-2"
+                    >
                       Message <span className="text-accent">*</span>
                     </label>
                     <textarea

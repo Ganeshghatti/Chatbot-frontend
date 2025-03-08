@@ -1,7 +1,7 @@
-import React from 'react';
-import { Mail, Phone, Linkedin, Twitter } from 'lucide-react';
+import React from "react";
+import { Mail, Phone, Linkedin, Twitter } from "lucide-react";
 import { FaXTwitter } from "react-icons/fa6";
-import Logo from './logo';
+import Logo from "./logo";
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div className="animate__animated animate__fadeIn">
-        <Logo/>
+            <Logo />
             <p className="text-gray-400 mb-4">
               Empowering businesses with smart chatbot solutions since 2020.
             </p>
@@ -33,14 +33,19 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="animate__animated animate__fadeIn" style={{ animationDelay: '0.2s' }}>
-            <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
+          <div
+            className="animate__animated animate__fadeIn"
+            style={{ animationDelay: "0.2s" }}
+          >
+            <h4 className="text-lg font-semibold text-white mb-4">
+              Quick Links
+            </h4>
             <ul className="space-y-2">
               {[
                 { href: "#hero", text: "Home" },
                 { href: "#pricing", text: "Pricing" },
                 { href: "#faq", text: "FAQ" },
-                { href: "#contact", text: "Contact" }
+                { href: "#contact", text: "Contact" },
               ].map((link, index) => (
                 <li key={index}>
                   <a
@@ -55,23 +60,37 @@ const Footer = () => {
           </div>
 
           {/* Contact Info */}
-          <div className="animate__animated animate__fadeIn" style={{ animationDelay: '0.4s' }}>
-            <h4 className="text-lg font-semibold text-white mb-4">Contact Us</h4>
+          <div
+            className="animate__animated animate__fadeIn"
+            style={{ animationDelay: "0.4s" }}
+          >
+            <h4 className="text-lg font-semibold text-white mb-4">
+              Contact Us
+            </h4>
             <ul className="space-y-3">
               <li className="flex items-start">
                 <Mail className="h-5 w-5 text-accent mr-2 mt-1" />
                 <div>
-                  <a href="mailto:info@thesquirrel.site" className="text-gray-400 hover:text-accent transition duration-300 block">
+                  <a
+                    href="mailto:info@thesquirrel.site"
+                    className="text-gray-400 hover:text-accent transition duration-300 block"
+                  >
                     info@thesquirrel.site
                   </a>
-                  <a href="mailto:hello@ganeshghatti.in" className="text-gray-400 hover:text-accent transition duration-300 block">
+                  <a
+                    href="mailto:hello@ganeshghatti.in"
+                    className="text-gray-400 hover:text-accent transition duration-300 block"
+                  >
                     hello@ganeshghatti.in
                   </a>
                 </div>
               </li>
               <li className="flex items-start">
                 <Phone className="h-5 w-5 text-accent mr-2 mt-1" />
-                <a href="tel:+919449610077" className="text-gray-400 hover:text-accent transition duration-300">
+                <a
+                  href="tel:+919449610077"
+                  className="text-gray-400 hover:text-accent transition duration-300"
+                >
                   +91 94496 10077
                 </a>
               </li>
@@ -81,9 +100,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-neutral-800 text-center text-gray-400 animate__animated animate__fadeIn">
-          <p>
-            © {new Date().getFullYear()} the squirrel. All rights reserved.
-          </p>
+          <p>© {new Date().getFullYear()} the squirrel. All rights reserved.</p>
         </div>
       </div>
     </footer>
