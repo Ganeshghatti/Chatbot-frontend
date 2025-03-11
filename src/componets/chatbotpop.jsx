@@ -1,15 +1,42 @@
-"use client";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Chatbot from "./chatbot";
 import { FaRobot, FaTimes } from "react-icons/fa";
 
 const Chatbotpop = () => {
-  const [isChatbotVisible, setIsChatbotVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [chatKey, setChatKey] = useState(Date.now());
+  const [hasError, setHasError] = useState(false);
 
-  const toggleChatbot = () => {
-    setIsChatbotVisible((prevState) => !prevState);
+  // Unified touch/click handler
+  const handleToggle = (e) => {
+    e.stopPropagation();
+    if (hasError) setHasError(false); // Reset error state
+    setChatKey(Date.now()); // Reset chatbot instance
+    setIsOpen((prev) => !prev);
   };
+
+  // Mobile-friendly outside click handler
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      const isTouchEvent = e.type === "touchstart";
+      const targetElement = isTouchEvent
+        ? e.changedTouches[0].target
+        : e.target;
+
+      if (isOpen && !targetElement.closest(".chatbot-container")) {
+        setIsOpen(false);
+      }
+    };
+
+    // Add both mouse and touch listeners
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [isOpen]);
 
   const initialMessages = [
     {
@@ -20,35 +47,29 @@ const Chatbotpop = () => {
   const demoQuestions = ["What types of chatbots do you offer?"];
 
   return (
-    <div>
+    <div className="chatbot-container fixed bottom-14 right-6 z-[9999]">
+      {isOpen && (
+        <div className="animate__animated animate__fadeInUp mb-4">
+          <Chatbot
+            key={chatKey}
+            companyId="the_squirrel_511912"
+            onError={() => setHasError(true)}
+          />
+        </div>
+      )}
+
       <button
         className="fixed lg:bottom-5 bottom-3 right-5 bg-accent hover:bg-accent-400 text-white rounded-full p-3 lg:p-4 shadow-lg text-xl hover:bg-accent-600 cursor-pointer focus:outline-none z-10"
-        onClick={toggleChatbot}
+        onClick={handleToggle}
       >
         <span className="text-2xl ">
-          {isChatbotVisible ? (
+          {isOpen ? (
             <FaTimes className="text-2xl transition-opacity duration-300" />
           ) : (
             <FaRobot className="text-2xl transition-opacity duration-300" />
           )}
         </span>
       </button>
-
-      <div
-        className={`fixed lg:bottom-40 bottom-53 lg:right-18 shadow-lg rounded-lg lg:p-5 p-6 w-92 lg:w-100 lg:h-96 h-95 z-20 transition-transform duration-500 ease-in-out ${isChatbotVisible
-          ? "translate-y-0 opacity-100"
-          : "translate-y-10 opacity-0"
-          }`}
-      >
-        {isChatbotVisible && (
-          <Chatbot
-            companyId="the_squirrel_511912"
-            initialMessages={initialMessages}
-            demoQuestions={demoQuestions}
-            title="Ask Squirrel Bot"
-          />
-        )}
-      </div>
     </div>
   );
 };

@@ -7,7 +7,7 @@ const Chatbot = ({
   demoQuestions = [],
   title = "Chatbot",
   externalMsg,
-  setExternalMsg
+  setExternalMsg,
 }) => {
   const [messages, setMessages] = useState(initialMessages);
   const [userInput, setUserInput] = useState("");
@@ -15,6 +15,7 @@ const Chatbot = ({
   const [quickQuestions, setQuickQuestions] = useState(demoQuestions);
   const [streamingMessage, setStreamingMessage] = useState("");
   const chatContainerRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Function to send message to the API with streaming support
   const sendMessageToAPI = async (message) => {
@@ -28,7 +29,6 @@ const Chatbot = ({
     };
 
     try {
-      // Set up streaming response handling
       const response = await fetch("https://api.chat.thesquirrel.site/chat", {
         method: "POST",
         headers: {
@@ -41,25 +41,20 @@ const Chatbot = ({
         throw new Error("Network response was not ok");
       }
 
-      // Get the response as a readable stream
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      setStreamingMessage(""); // Reset streaming message
+      setStreamingMessage("");
 
       let fullResponse = "";
-      
-      // Process the stream
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        
-        // Decode the chunk
+
         const chunk = decoder.decode(value, { stream: true });
-        
-        // Process each line in the chunk (SSE format)
-        const lines = chunk.split('\n');
+        const lines = chunk.split("\n");
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
+          if (line.startsWith("data: ")) {
             try {
               const jsonData = JSON.parse(line.substring(6));
               if (jsonData.chunk !== undefined) {
@@ -72,7 +67,7 @@ const Chatbot = ({
           }
         }
       }
-      
+
       return fullResponse || "Sorry, I couldn't process that request.";
     } catch (error) {
       console.error("API Error:", error);
@@ -80,7 +75,6 @@ const Chatbot = ({
     }
   };
 
-  // Handle sending user message
   const sendMessage = async () => {
     const inputTxt = externalMsg || userInput;
     if (!inputTxt.trim()) return;
@@ -90,25 +84,26 @@ const Chatbot = ({
     setIsTyping(true);
     setUserInput("");
 
-    // Add a temporary streaming message container
-    setMessages((prev) => [...prev, { text: "", isBot: true, isStreaming: true }]);
+    setMessages((prev) => [
+      ...prev,
+      { text: "", isBot: true, isStreaming: true },
+    ]);
 
     const botResponse = await sendMessageToAPI(inputTxt);
-    
-    // Replace the streaming message with the final response
-    setMessages((prev) => 
-      prev.map((msg, idx) => 
-        idx === prev.length - 1 && msg.isStreaming 
-          ? { text: botResponse, isBot: true, isStreaming: false } 
+
+    setMessages((prev) =>
+      prev.map((msg, idx) =>
+        idx === prev.length - 1 && msg.isStreaming
+          ? { text: botResponse, isBot: true, isStreaming: false }
           : msg
       )
     );
-    
+
     setStreamingMessage("");
     setIsTyping(false);
+    inputRef.current?.focus();
   };
 
-  // Handle demo question clicks
   const handleDemoQuestion = async (question) => {
     const newUserMessage = { text: question, isBot: false };
     setMessages((prev) => [...prev, newUserMessage]);
@@ -116,36 +111,37 @@ const Chatbot = ({
 
     setQuickQuestions((prev) => prev.filter((q) => q !== question));
 
-    // Add a temporary streaming message container
-    setMessages((prev) => [...prev, { text: "", isBot: true, isStreaming: true }]);
+    setMessages((prev) => [
+      ...prev,
+      { text: "", isBot: true, isStreaming: true },
+    ]);
 
     const botResponse = await sendMessageToAPI(question);
-    
-    // Replace the streaming message with the final response
-    setMessages((prev) => 
-      prev.map((msg, idx) => 
-        idx === prev.length - 1 && msg.isStreaming 
-          ? { text: botResponse, isBot: true, isStreaming: false } 
+
+    setMessages((prev) =>
+      prev.map((msg, idx) =>
+        idx === prev.length - 1 && msg.isStreaming
+          ? { text: botResponse, isBot: true, isStreaming: false }
           : msg
       )
     );
-    
+
     setStreamingMessage("");
     setIsTyping(false);
+    inputRef.current?.focus();
   };
 
-  // Auto-scroll to latest message
   useEffect(() => {
     const scrollToBottom = () => {
       if (chatContainerRef.current) {
-        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        chatContainerRef.current.scrollTop =
+          chatContainerRef.current.scrollHeight;
       }
     };
 
-    // Use a small timeout to ensure DOM is updated
     const timer = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timer);
-  }, [messages, isTyping, streamingMessage]); // Add streamingMessage to dependencies
+  }, [messages, isTyping, streamingMessage]);
 
   useEffect(() => {
     if (externalMsg) {
@@ -181,10 +177,11 @@ const Chatbot = ({
                 ? "bg-neutral-700 rounded-tl-none"
                 : "bg-accent rounded-tr-none ml-auto"
             }`}
-            dangerouslySetInnerHTML={{ 
-              __html: message.isStreaming && index === messages.length - 1
-                ? markdown.toHTML(streamingMessage)
-                : markdown.toHTML(message.text) 
+            dangerouslySetInnerHTML={{
+              __html:
+                message.isStreaming && index === messages.length - 1
+                  ? markdown.toHTML(streamingMessage)
+                  : markdown.toHTML(message.text),
             }}
           />
         ))}
@@ -224,10 +221,16 @@ const Chatbot = ({
       {/* Input Area */}
       <div className="flex items-center border-t border-neutral-700 pt-4">
         <input
+          ref={inputRef}
           type="text"
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); // Prevent form submission
+              sendMessage();
+            }
+          }}
           placeholder="Type your message..."
           className="bg-neutral-700 rounded-lg px-4 py-2 flex-grow text-white focus:outline-none focus:ring-2 focus:ring-accent"
         />
