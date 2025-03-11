@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const FAQSection = () => {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -9,33 +9,36 @@ const FAQSection = () => {
 
   const faqs = [
     {
-      question: "What is the difference between ready-made and custom chatbots?",
-      answer: "Ready-made chatbots are pre-built solutions that can be quickly deployed with your company data customized within 15 minutes to 48 hours, featuring a free first month followed by a subscription. Custom chatbots are built from scratch to meet your specific business requirements, offering advanced integrations and tailored conversation flows, requiring 2-4 weeks of development with a one-time fee plus maintenance."
+      question:
+        "What is the difference between ready-made and custom chatbots?",
+      answer:
+        "Ready-made chatbots are pre-built solutions that can be quickly deployed with your company data customized within 15 minutes to 48 hours, featuring a free first month followed by a subscription. Custom chatbots are built from scratch to meet your specific business requirements, offering advanced integrations and tailored conversation flows, requiring 2-4 weeks of development with a one-time fee plus maintenance.",
     },
     {
       question: "How do I integrate a chatbot into my website?",
-      answer: "For ready-made chatbots, we provide a simple code snippet that you can copy and paste into your website's HTML. For custom chatbots, our team handles the integration process, ensuring seamless compatibility with your website and any other systems (like CRM or payment platforms) you use."
+      answer:
+        "For ready-made chatbots, we provide a simple code snippet that you can copy and paste into your website's HTML. For custom chatbots, our team handles the integration process, ensuring seamless compatibility with your website and any other systems (like CRM or payment platforms) you use.",
     },
     {
       question: "Can your chatbots work on platforms other than my website?",
-      answer: "Yes! Our chatbots support multi-channel deployment, including Facebook Messenger, WhatsApp, and other platforms. This is available with both ready-made (subscription tier) and custom chatbots, allowing you to engage customers wherever they are."
+      answer:
+        "Yes! Our chatbots support multi-channel deployment, including Facebook Messenger, WhatsApp, and other platforms. This is available with both ready-made (subscription tier) and custom chatbots, allowing you to engage customers wherever they are.",
     },
     {
       question: "What kind of support do you offer after deployment?",
-      answer: "For ready-made chatbots, we provide 24/7 customer support and monthly updates as part of the subscription. For custom chatbots, we offer ongoing maintenance, performance optimization, and priority support tailored to your needs, included in the maintenance fee."
-    },
-    {
-      question: "Are your chatbots secure and compliant with regulations?",
-      answer: "Absolutely. All our chatbots feature data encryption and GDPR compliance. Custom chatbots can be built to meet additional industry-specific regulations like HIPAA for healthcare or PCI-DSS for payments, ensuring your customers' data is secure."
+      answer:
+        "For ready-made chatbots, we provide 24/7 customer support and monthly updates as part of the subscription. For custom chatbots, we offer ongoing maintenance, performance optimization, and priority support tailored to your needs, included in the maintenance fee.",
     },
     {
       question: "How do your chatbots handle complex customer queries?",
-      answer: "Ready-made chatbots handle common queries using pre-trained responses and can escalate to human agents when needed. Custom chatbots use advanced NLP to understand complex queries and context, with custom flows designed for your specific use cases, reducing the need for escalation."
+      answer:
+        "Ready-made chatbots handle common queries using pre-trained responses and can escalate to human agents when needed. Custom chatbots use advanced NLP to understand complex queries and context, with custom flows designed for your specific use cases, reducing the need for escalation.",
     },
     {
       question: "What happens if I want to cancel my subscription?",
-      answer: "For ready-made chatbots, you can cancel anytime after the free month with no penalties—just let us know, and we'll deactivate the chatbot. Custom chatbots are a one-time development purchase with optional maintenance; you own the solution and can discontinue maintenance anytime."
-    }
+      answer:
+        "For ready-made chatbots, you can cancel anytime after the free month with no penalties—just let us know, and we'll deactivate the chatbot. Custom chatbots are a one-time development purchase with optional maintenance; you own the solution and can discontinue maintenance anytime.",
+    },
   ];
 
   return (
@@ -47,7 +50,8 @@ const FAQSection = () => {
             Frequently Asked <span className="text-accent">Questions</span>
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto text-lg animate__animated animate__fadeIn">
-            Have questions? We've got answers. Here are some of the most common inquiries about our chatbot services.
+            Have questions? We've got answers. Here are some of the most common
+            inquiries about our chatbot services.
           </p>
         </div>
 
@@ -65,18 +69,25 @@ const FAQSection = () => {
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className={`h-6 w-6 text-accent transform transition-transform duration-300 ${
-                    activeIndex === index ? 'rotate-180' : ''
+                    activeIndex === index ? "rotate-180" : ""
                   }`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               <div
                 className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                  activeIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  activeIndex === index
+                    ? "max-h-96 opacity-100"
+                    : "max-h-0 opacity-0"
                 }`}
               >
                 <div className="bg-neutral-800 p-5 rounded-b-lg border-t border-neutral-700">
