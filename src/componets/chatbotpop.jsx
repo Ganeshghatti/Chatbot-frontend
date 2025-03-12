@@ -7,15 +7,13 @@ const Chatbotpop = () => {
   const [chatKey, setChatKey] = useState(Date.now());
   const [hasError, setHasError] = useState(false);
 
-  // Unified touch/click handler
   const handleToggle = (e) => {
     e.stopPropagation();
-    if (hasError) setHasError(false); // Reset error state
-    setChatKey(Date.now()); // Reset chatbot instance
+    if (hasError) setHasError(false);
+    setChatKey(Date.now());
     setIsOpen((prev) => !prev);
   };
 
-  // Mobile-friendly outside click handler
   useEffect(() => {
     const handleClickOutside = (e) => {
       const isTouchEvent = e.type === "touchstart";
@@ -28,7 +26,6 @@ const Chatbotpop = () => {
       }
     };
 
-    // Add both mouse and touch listeners
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
 
@@ -47,12 +44,14 @@ const Chatbotpop = () => {
   const demoQuestions = ["What types of chatbots do you offer?"];
 
   return (
-    <div className="chatbot-container fixed bottom-14 right-6 z-[9999]">
+    <div className="chatbot-container fixed bottom-14 right-6 lg:left-auto md:left-auto left-6  lg:right-22 lg:bottom-0 z-[9999]">
       {isOpen && (
         <div className="animate__animated animate__fadeInUp mb-4">
           <Chatbot
             key={chatKey}
             companyId="the_squirrel_511912"
+            initialMessages={initialMessages}
+            demoQuestions={demoQuestions}
             onError={() => setHasError(true)}
           />
         </div>
