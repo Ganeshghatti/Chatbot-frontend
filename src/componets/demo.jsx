@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import Chatbot from './chatbot';
+import React, { useState, useEffect } from "react";
+import Chatbot from "./chatbot";
 
 const DemoSection = () => {
-const [externalMsg, setExternalMsg] = useState(null)
+  const [externalMsg, setExternalMsg] = useState(null);
 
   const initialMessages = [
     {
       text: "👋 Hi there! I'm the Squirrel demo bot. I can help you learn about our chatbot services. What would you like to know?",
-      isBot: true
-    }
+      isBot: true,
+    },
   ];
   const demoQuestions = [
     "What types of chatbots do you offer?",
     "How much does a custom chatbot cost?",
     "How long does it take to set up a chatbot?",
     "What industries do your chatbots work for?",
-    "Can the chatbot handle customer support?"
+    "Can the chatbot handle customer support?",
   ];
 
   return (
@@ -26,7 +26,9 @@ const [externalMsg, setExternalMsg] = useState(null)
             Try Our <span className="text-accent">Interactive Demo</span>
           </h2>
           <p className="text-gray-300 max-w-3xl mx-auto text-lg animate__animated animate__fadeIn">
-            Experience firsthand how our chatbots can transform your customer interactions. Ask questions, get product information, and see the power of AI-driven conversations.
+            Experience firsthand how our chatbots can transform your customer
+            interactions. Ask questions, get product information, and see the
+            power of AI-driven conversations.
           </p>
         </div>
 
@@ -46,7 +48,9 @@ const [externalMsg, setExternalMsg] = useState(null)
           {/* Demo Questions */}
           <div className="lg:w-1/2 order-1 lg:order-2 animate__animated animate__fadeInUp">
             <div className="bg-neutral-900 rounded-xl p-8 max-w-md mx-auto">
-              <h3 className="text-2xl font-bold text-white mb-6">Common Questions to Ask:</h3>
+              <h3 className="text-2xl font-bold text-white mb-6">
+                Common Questions to Ask:
+              </h3>
               <ul className="space-y-4">
                 {demoQuestions.map((question, index) => (
                   <li key={index}>
@@ -64,7 +68,10 @@ const [externalMsg, setExternalMsg] = useState(null)
         </div>
 
         <div className="text-center mt-16 animate__animated animate__fadeIn">
-          <a href="#pricing" className="inline-flex items-center text-accent font-semibold hover:text-white transition duration-300">
+          <a
+            href="#pricing"
+            className="inline-flex items-center text-accent font-semibold hover:text-white transition duration-300"
+          >
             Learn more about our services
             <svg
               xmlns="http://www.w3.org/2000/svg"

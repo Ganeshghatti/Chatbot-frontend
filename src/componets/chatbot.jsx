@@ -4,7 +4,6 @@ import { markdown } from "markdown";
 const Chatbot = ({
   companyId,
   initialMessages = [],
-  demoQuestions = [],
   title = "Chatbot",
   externalMsg,
   setExternalMsg,
@@ -12,10 +11,14 @@ const Chatbot = ({
   const [messages, setMessages] = useState(initialMessages);
   const [userInput, setUserInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [quickQuestions, setQuickQuestions] = useState(demoQuestions);
+  // const [quickQuestions, setQuickQuestions] = useState(demoQuestions);
   const [streamingMessage, setStreamingMessage] = useState("");
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
+  const [askedQuestions, setAskedQuestions] = useState(new Set());
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const demoQuestions = ["Services", "Types of Chatbots", "Pricing"];
 
   // Function to send message to the API with streaming support
   const sendMessageToAPI = async (message) => {
@@ -76,40 +79,73 @@ const Chatbot = ({
   };
 
   const sendMessage = async () => {
+    if (isProcessing) {
+      console.log("Already processing a message. Ignoring new request.");
+      return;
+    }
+
+    console.log(
+      "Starting to process a new message. Disabling input and quick questions."
+    );
+    setIsProcessing(true); // Start processing
+
     const inputTxt = externalMsg || userInput;
-    if (!inputTxt.trim()) return;
+    if (!inputTxt.trim()) {
+      setIsProcessing(false); // Reset if input is empty
+      return;
+    }
 
     const newUserMessage = { text: inputTxt, isBot: false };
     setMessages((prev) => [...prev, newUserMessage]);
-    setIsTyping(true);
     setUserInput("");
 
+    if (typeof setExternalMsg === "function") {
+      setExternalMsg(null);
+    }
+
+    // Add streaming message
     setMessages((prev) => [
       ...prev,
       { text: "", isBot: true, isStreaming: true },
     ]);
 
-    const botResponse = await sendMessageToAPI(inputTxt);
-
-    setMessages((prev) =>
-      prev.map((msg, idx) =>
-        idx === prev.length - 1 && msg.isStreaming
-          ? { text: botResponse, isBot: true, isStreaming: false }
-          : msg
-      )
-    );
-
-    setStreamingMessage("");
-    setIsTyping(false);
-    inputRef.current?.focus();
+    try {
+      const botResponse = await sendMessageToAPI(inputTxt);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.isStreaming
+            ? { text: botResponse, isBot: true, isStreaming: false }
+            : msg
+        )
+      );
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.isStreaming
+            ? {
+                text: "Sorry, something went wrong. Please try again.",
+                isBot: true,
+                isStreaming: false,
+              }
+            : msg
+        )
+      );
+    } finally {
+      console.log(
+        "Finished processing. Re-enabling input and quick questions."
+      );
+      setIsProcessing(false); // End processing
+      setStreamingMessage("");
+      inputRef.current?.focus();
+    }
   };
 
   const handleDemoQuestion = async (question) => {
+    setAskedQuestions((prev) => new Set([...prev, question]));
+
     const newUserMessage = { text: question, isBot: false };
     setMessages((prev) => [...prev, newUserMessage]);
-    setIsTyping(true);
-
-    setQuickQuestions((prev) => prev.filter((q) => q !== question));
 
     setMessages((prev) => [
       ...prev,
@@ -119,15 +155,13 @@ const Chatbot = ({
     const botResponse = await sendMessageToAPI(question);
 
     setMessages((prev) =>
-      prev.map((msg, idx) =>
-        idx === prev.length - 1 && msg.isStreaming
+      prev.map((msg) =>
+        msg.isStreaming
           ? { text: botResponse, isBot: true, isStreaming: false }
           : msg
       )
     );
-
     setStreamingMessage("");
-    setIsTyping(false);
     inputRef.current?.focus();
   };
 
@@ -141,7 +175,7 @@ const Chatbot = ({
 
     const timer = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timer);
-  }, [messages, isTyping, streamingMessage]);
+  }, [messages, streamingMessage]);
 
   useEffect(() => {
     if (externalMsg) {
@@ -152,7 +186,7 @@ const Chatbot = ({
   }, [externalMsg]);
 
   return (
-    <div className="bg-neutral-900 !text-white border-2 border-accent rounded-xl p-6 shadow-2xl shadow-accent/10 w-full max-w-md">
+    <div className="bg-neutral-900 !text-white border-2 border-accent rounded-xl p-5 shadow-2xl shadow-accent/10 w-full max-w-md">
       {/* Chat Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="text-accent font-bold">{title}</div>
@@ -167,25 +201,39 @@ const Chatbot = ({
       <div
         ref={chatContainerRef}
         id={`chat-messages-${companyId}`}
-        className="space-y-4 mb-6 h-64 overflow-y-auto px-2"
+        className="space-y-4 mb-6  h-75 overflow-y-auto px-2"
       >
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`p-3 rounded-lg max-w-[80%] animate__animated animate__fadeInUp ${
+            className={`p-3 rounded-lg max-w-[85%]  text-[14px] animate__animated animate__fadeInUp ${
               message.isBot
                 ? "bg-neutral-700 rounded-tl-none"
                 : "bg-accent rounded-tr-none ml-auto"
             }`}
-            dangerouslySetInnerHTML={{
-              __html:
-                message.isStreaming && index === messages.length - 1
-                  ? markdown.toHTML(streamingMessage)
-                  : markdown.toHTML(message.text),
-            }}
-          />
+          >
+            {message.isStreaming ? (
+              <div className="flex space-x-1">
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.2s" }}
+                ></div>
+                <div
+                  className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "0.4s" }}
+                ></div>
+              </div>
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: markdown.toHTML(message.text),
+                }}
+              />
+            )}
+          </div>
         ))}
-        {isTyping && !streamingMessage && (
+        {/* {isTyping && !streamingMessage && (
           <div className="bg-neutral-700 p-3 rounded-lg rounded-tl-none max-w-[80%] flex space-x-1">
             <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
             <div
@@ -197,26 +245,29 @@ const Chatbot = ({
               style={{ animationDelay: "0.4s" }}
             ></div>
           </div>
-        )}
+        )} */}
       </div>
 
-      {/* Demo Questions (Optional) */}
-      {quickQuestions.length > 0 && (
-        <div className="mb-4">
-          <div className="text-gray-400 text-sm mb-2">Quick Questions:</div>
-          <div className="flex flex-wrap gap-2">
-            {quickQuestions.map((question, index) => (
-              <button
-                key={index}
-                onClick={() => handleDemoQuestion(question)}
-                className="bg-neutral-700 hover:bg-neutral-600 text-white text-sm py-1 px-3 rounded-full transition duration-300"
-              >
-                {question}
-              </button>
-            ))}
-          </div>
+      {/* Quick Questions Section */}
+      <div className="mb-3 h-12 mt-[-1px]">
+        <div className="text-gray-400 text-[12px] mb-2">
+          Explore Categories:
         </div>
-      )}
+        <div className="flex flex-wrap gap-2">
+          {demoQuestions.map((category, index) => (
+            <button
+              key={index}
+              onClick={() => handleDemoQuestion(category)}
+              disabled={isProcessing}
+              className={`bg-neutral-700 hover:bg-neutral-600 text-white text-[12px] py-1 px-3 rounded-full transition duration-300 ${
+                isProcessing ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Input Area */}
       <div className="flex items-center border-t border-neutral-700 pt-4">
@@ -232,12 +283,13 @@ const Chatbot = ({
             }
           }}
           placeholder="Type your message..."
-          className="bg-neutral-700 rounded-lg px-4 py-2 flex-grow text-white focus:outline-none focus:ring-2 focus:ring-accent"
+          className="flex-1 bg-neutral-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-accent disabled:opacity-50"
+          disabled={isProcessing}
         />
         <button
           onClick={sendMessage}
           className="ml-2 bg-accent p-2 rounded-lg hover:bg-[#e05a00] transition duration-300 cursor-pointer"
-          disabled={isTyping}
+          // disabled={isTyping}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
