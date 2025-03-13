@@ -125,7 +125,7 @@ const Header = () => {
               smooth={true}
               spy={true}
               offset={-280}
-              duration={500}
+              duration={1000}
               onClick={() => setIsMobileMenuOpen(false)}
               className="hover:text-accent transition duration-300 cursor-pointer"
             >
@@ -136,7 +136,7 @@ const Header = () => {
               smooth={true}
               spy={true}
               offset={-280}
-              duration={500}
+              duration={1000}
               onClick={() => setIsMobileMenuOpen(false)}
               className="hover:text-accent transition duration-300 cursor-pointer"
             >
@@ -147,7 +147,7 @@ const Header = () => {
               smooth={true}
               spy={true}
               offset={-280}
-              duration={500}
+              duration={1000}
               onClick={() => setIsMobileMenuOpen(false)}
               className="hover:text-accent transition duration-300 cursor-pointer"
             >
@@ -158,7 +158,7 @@ const Header = () => {
               smooth={true}
               spy={true}
               offset={-280}
-              duration={500}
+              duration={1000}
               onClick={() => setIsMobileMenuOpen(false)}
               className="hover:text-accent transition duration-300 cursor-pointer"
             >
@@ -169,7 +169,7 @@ const Header = () => {
               smooth={true}
               spy={true}
               offset={-280}
-              duration={500}
+              duration={1000}
               onClick={() => setIsMobileMenuOpen(false)}
               className="hover:text-accent transition duration-300 cursor-pointer"
             >
