@@ -1,6 +1,8 @@
-'use client'
-import React, { useState, useEffect } from 'react';
-import Logo from './logo';
+"use client";
+import React, { useState, useEffect } from "react";
+import Logo from "./logo";
+import NextLink from "next/link";
+import { Link as ScrollLink } from "react-scroll";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,34 +20,68 @@ const Header = () => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [isMobileMenuOpen]);
 
   return (
     <header id="header" className="bg-neutral-900 text-white sticky top-0 z-50">
       <nav className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
-        <Logo/>
+          <Logo />
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            <a href="#hero" className="hover:text-accent transition duration-300">
+            <ScrollLink
+              to="hero"
+              spy={true}
+              smooth={true}
+              offset={-80}
+              duration={500}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Home
-            </a>
-            <a href="#demo" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="demo"
+              spy={true}
+              offset={-80}
+              smooth={true}
+              duration={500}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Demo
-            </a>
-            <a href="#pricing" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="pricing"
+              spy={true}
+              offset={-80}
+              smooth={true}
+              duration={500}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Pricing
-            </a>
-           
-            <a href="#faq" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="faq"
+              spy={true}
+              offset={-80}
+              smooth={true}
+              duration={500}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               FAQ
-            </a>
-            <a href="#contact" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="contact"
+              spy={true}
+              offset={-80}
+              smooth={true}
+              duration={500}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Contact
-            </a>
+            </ScrollLink>
           </div>
 
           {/* Mobile Menu Button */}
@@ -79,31 +115,66 @@ const Header = () => {
           id="mobile-menu"
           className={`md:hidden bg-neutral-800 mt-2 rounded-lg animate__animated ${
             isMobileMenuOpen
-              ? 'block animate__fadeIn'
-              : 'hidden animate__fadeOut'
+              ? "block animate__fadeIn"
+              : "hidden animate__fadeOut"
           }`}
         >
           <div className="flex flex-col space-y-3 p-4">
-            <a href="#hero" className="hover:text-accent transition duration-300">
+            <ScrollLink
+              to="hero"
+              smooth={true}
+              spy={true}
+              offset={-280}
+              duration={1000}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Home
-            </a>
-            <a href="#demo" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="demo"
+              smooth={true}
+              spy={true}
+              offset={-280}
+              duration={1000}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Demo
-            </a>
-            
-            <a href="#readymade" className="hover:text-accent transition duration-300">
-              Ready-Made
-            </a>
-            
-            <a href="#pricing" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="pricing"
+              smooth={true}
+              spy={true}
+              offset={-280}
+              duration={1000}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Pricing
-            </a>
-            <a href="#faq" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="faq"
+              smooth={true}
+              spy={true}
+              offset={-280}
+              duration={1000}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               FAQ
-            </a>
-            <a href="#contact" className="hover:text-accent transition duration-300">
+            </ScrollLink>
+            <ScrollLink
+              to="contact"
+              smooth={true}
+              spy={true}
+              offset={-280}
+              duration={1000}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="hover:text-accent transition duration-300 cursor-pointer"
+            >
               Contact
-            </a>
+            </ScrollLink>
           </div>
         </div>
       </nav>
