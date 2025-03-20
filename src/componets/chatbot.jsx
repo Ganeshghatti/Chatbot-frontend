@@ -18,7 +18,6 @@ const Chatbot = ({
 
   const demoQuestions = ["Services", "Types of Chatbots", "Pricing"];
   const [clickedQuestion, setClickedQuestion] = useState(null);
-  const [quickQuestions, setQuickQuestions] = useState(demoQuestions);
 
   // Function to send message to the API with streaming support
   const sendMessageToAPI = async (message) => {
@@ -59,13 +58,15 @@ const Chatbot = ({
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             try {
-              const jsonData = JSON.parse(line.substring(6));
+              const jsonString = line.substring(6); // Remove "data: " prefix
+              const jsonData = JSON.parse(jsonString); // Parse JSON
               if (jsonData.chunk !== undefined) {
                 fullResponse += jsonData.chunk;
                 setStreamingMessage(fullResponse);
               }
             } catch (e) {
               console.error("Error parsing JSON from stream:", e);
+              console.error("Raw data:", line); // Log the raw data for debugging
             }
           }
         }
