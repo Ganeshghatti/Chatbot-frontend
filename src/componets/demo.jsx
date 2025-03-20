@@ -3,6 +3,7 @@ import Chatbot from "./chatbot";
 
 const DemoSection = () => {
   const [externalMsg, setExternalMsg] = useState(null);
+  const [clickedQuestion, setClickedQuestion] = useState(null);
 
   const initialMessages = [
     {
@@ -17,6 +18,11 @@ const DemoSection = () => {
     "What industries do your chatbots work for?",
     "Can the chatbot handle customer support?",
   ];
+  useEffect(() => {
+    if (!externalMsg) {
+      setClickedQuestion(null);
+    }
+  }, [externalMsg]);
 
   return (
     <section id="demo" className="bg-neutral-800 py-16 md:py-24">
@@ -55,7 +61,13 @@ const DemoSection = () => {
                 {demoQuestions.map((question, index) => (
                   <li key={index}>
                     <button
-                      onClick={() => setExternalMsg(question)}
+                      onClick={() => {
+                        setExternalMsg(question);
+                        setClickedQuestion(question);
+                      }}
+                      disabled={
+                        clickedQuestion !== null && clickedQuestion !== question
+                      }
                       className="demo-question bg-neutral-800 hover:bg-neutral-700 p-3 rounded-lg w-full text-left text-gray-300 hover:text-white transition duration-300 border-l-4 border-accent"
                     >
                       {question}
