@@ -11,14 +11,13 @@ const Chatbot = ({
   const [messages, setMessages] = useState(initialMessages);
   const [userInput, setUserInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  // const [quickQuestions, setQuickQuestions] = useState(demoQuestions);
   const [streamingMessage, setStreamingMessage] = useState("");
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
-  const [askedQuestions, setAskedQuestions] = useState(new Set());
   const [isProcessing, setIsProcessing] = useState(false);
 
   const demoQuestions = ["Services", "Types of Chatbots", "Pricing"];
+  const [clickedQuestion, setClickedQuestion] = useState(null);
 
   // Function to send message to the API with streaming support
   const sendMessageToAPI = async (message) => {
@@ -59,13 +58,15 @@ const Chatbot = ({
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             try {
-              const jsonData = JSON.parse(line.substring(6));
+              const jsonString = line.substring(6); // Remove "data: " prefix
+              const jsonData = JSON.parse(jsonString); // Parse JSON
               if (jsonData.chunk !== undefined) {
                 fullResponse += jsonData.chunk;
                 setStreamingMessage(fullResponse);
               }
             } catch (e) {
               console.error("Error parsing JSON from stream:", e);
+              console.error("Raw data:", line); // Log the raw data for debugging
             }
           }
         }
@@ -142,27 +143,48 @@ const Chatbot = ({
   };
 
   const handleDemoQuestion = async (question) => {
-    setAskedQuestions((prev) => new Set([...prev, question]));
+    if (isProcessing) return; // Prevent multiple messages
+
+    setClickedQuestion(question); // Track the clicked question
+    setIsProcessing(true); // Start processing
 
     const newUserMessage = { text: question, isBot: false };
     setMessages((prev) => [...prev, newUserMessage]);
 
+    // Add streaming message
     setMessages((prev) => [
       ...prev,
       { text: "", isBot: true, isStreaming: true },
     ]);
 
-    const botResponse = await sendMessageToAPI(question);
-
-    setMessages((prev) =>
-      prev.map((msg) =>
-        msg.isStreaming
-          ? { text: botResponse, isBot: true, isStreaming: false }
-          : msg
-      )
-    );
-    setStreamingMessage("");
-    inputRef.current?.focus();
+    try {
+      const botResponse = await sendMessageToAPI(question);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.isStreaming
+            ? { text: botResponse, isBot: true, isStreaming: false }
+            : msg
+        )
+      );
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.isStreaming
+            ? {
+                text: "Sorry, something went wrong. Please try again.",
+                isBot: true,
+                isStreaming: false,
+              }
+            : msg
+        )
+      );
+    } finally {
+      setIsProcessing(false); // End processing
+      setClickedQuestion(null); // Reset clicked question
+      setStreamingMessage("");
+      inputRef.current?.focus();
+    }
   };
 
   useEffect(() => {
@@ -258,7 +280,7 @@ const Chatbot = ({
             <button
               key={index}
               onClick={() => handleDemoQuestion(category)}
-              disabled={isProcessing}
+              disabled={isProcessing && clickedQuestion !== category} // Disable other questions
               className={`bg-neutral-700 hover:bg-neutral-600 text-white text-[12px] py-1 px-3 rounded-full transition duration-300 ${
                 isProcessing ? "opacity-50 cursor-not-allowed" : ""
               }`}
