@@ -31,7 +31,7 @@ const Chatbot = ({
     };
 
     try {
-      const response = await fetch("https://api.chat.thesquirrel.site/chat", {
+      const response = await fetch("https://api.chat.thesquirrel.tech/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
