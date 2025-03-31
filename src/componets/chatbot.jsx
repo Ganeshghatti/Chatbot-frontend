@@ -29,7 +29,10 @@ const Chatbot = ({
     try {
       const response = await fetch("https://api.chat.thesquirrel.tech/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "text/event-stream", // Enables SSE streaming
+        },
         body: JSON.stringify(payload),
       });
 
@@ -100,10 +103,10 @@ const Chatbot = ({
         prev.map((msg) =>
           msg.isStreaming
             ? {
-                text: "Sorry, something went wrong. Please try again.",
-                isBot: true,
-                isStreaming: false,
-              }
+              text: "Sorry, something went wrong. Please try again.",
+              isBot: true,
+              isStreaming: false,
+            }
             : msg
         )
       );
@@ -142,11 +145,10 @@ const Chatbot = ({
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`p-3 rounded-lg max-w-[85%] text-[14px] ${
-              message.isBot
+            className={`p-3 rounded-lg max-w-[85%] text-[14px] ${message.isBot
                 ? "bg-neutral-700 rounded-tl-none"
                 : "bg-accent rounded-tr-none ml-auto"
-            }`}
+              }`}
           >
             {message.isStreaming ? (
               <div className="flex space-x-1">
