@@ -3,14 +3,13 @@ import Chatbot from "./chatbot";
 import { FaRobot, FaTimes } from "react-icons/fa";
 
 const Chatbotpop = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [chatKey, setChatKey] = useState(Date.now());
+  const [isOpen, setIsOpen] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [chatHistory, setChatHistory] = useState([]);
 
   const handleToggle = (e) => {
     e.stopPropagation();
     if (hasError) setHasError(false);
-    setChatKey(Date.now());
     setIsOpen((prev) => !prev);
   };
 
@@ -45,17 +44,21 @@ const Chatbotpop = () => {
 
   return (
     <div className="chatbot-container fixed bottom-14 right-6 lg:left-auto md:left-auto left-6  lg:right-22 lg:bottom-0 z-[9999]">
-      {isOpen && (
-        <div className="animate__animated animate__fadeInUp mb-4">
-          <Chatbot
-            key={chatKey}
-            companyId="the_squirrel_511912"
-            initialMessages={initialMessages}
-            demoQuestions={demoQuestions}
-            onError={() => setHasError(true)}
-          />
-        </div>
-      )}
+      <div
+        className={`animate__animated animate__fadeInUp mb-4 ${
+          isOpen ? "block" : "hidden"
+        }`}
+      >
+        <Chatbot
+          companyId="the_squirrel_511912"
+          initialMessages={[...initialMessages, ...chatHistory]}
+          demoQuestions={demoQuestions}
+          onError={() => setHasError(true)}
+          onMessage={(message) => {
+            setChatHistory((prev) => [...prev, message]);
+          }}
+        />
+      </div>
 
       <button
         className="fixed lg:bottom-5 bottom-3 right-5 bg-accent hover:bg-accent-400 text-white rounded-full p-3 lg:p-4 shadow-lg text-xl hover:bg-accent-600 cursor-pointer focus:outline-none z-10"
