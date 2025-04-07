@@ -3,11 +3,11 @@ import React from "react";
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "E-commerce Manager",
-      company: "Trendy Threads",
+      name: "Aniket",
+      role: "Founder",
+      company: "Aidcircle",
       quote:
-        "The ready-made chatbot from the squirrel increased our conversion rates by 35% within the first month. It was so easy to set up, and the team customized it perfectly for our store!",
+        "At Aidcircle.in, we’re committed to creating a smooth and supportive experience for every user who visits our platform. With the integration of The Squirrel’s Chatbot, we’ve taken a big step forward in making that happen. The chatbot has been a valuable addition to our website – offering instant responses, guiding users through the donation process, and helping campaigners navigate their fundraising journey.Whether it’s a basic query or a specific support request, the chatbot is available 24/7, ensuring that no question goes unanswered. Its smart, conversational interface makes it easy for users to engage, and we’ve seen a noticeable improvement in user satisfaction and faster resolution times since its launch. We’re glad to have partnered with The Squirrel’s to make Aidcircle more accessible, responsive, and user- friendly for all.",
       rating: 5,
     },
     {
