@@ -18,14 +18,6 @@ const TestimonialsSection = () => {
         "At Social Hardware, we’ve been using The Squirrel’s chatbot for a while now, and it’s been a great addition to our website. It’s been really helpful in handling those everyday customer questions, and what’s impressed us most is how accurately it answers technical questions about our products and services. This has given our team more time to focus on the bigger-picture tasks. What’s stood out to me is how responsive and supportive The Squirrel’s team has been—they’re quick to answer questions and always willing to make tweaks when we need them. The chatbot does exactly what we need it to do, and it’s been a straightforward, no-fuss solution for us. If you’re looking for a chatbot that’s easy to use, handles technical queries well, and gets the job done, I’d definitely recommend The Squirrel—they’ve been an exceptional partner for us.",
       rating: 5,
     },
-    {
-      name: "Emma Rodriguez",
-      role: "Marketing Lead",
-      company: "TravelEasy Agency",
-      quote:
-        "The multi-channel support feature is a game-changer. Our customers can now book trips via WhatsApp or our website with the same seamless experience. Fantastic support too!",
-      rating: 5,
-    },
   ];
 
   return (
@@ -43,7 +35,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8 animate__animated animate__fadeInUp">
+        <div className="grid md:grid-cols-2 gap-8 animate__animated animate__fadeInUp">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
