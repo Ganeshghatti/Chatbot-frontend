@@ -3,11 +3,11 @@ import React from "react";
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "E-commerce Manager",
-      company: "Trendy Threads",
+      name: "Aniket",
+      role: "Founder",
+      company: "Aidcircle",
       quote:
-        "The ready-made chatbot from the squirrel increased our conversion rates by 35% within the first month. It was so easy to set up, and the team customized it perfectly for our store!",
+        "At Aidcircle.in, we’re committed to creating a smooth and supportive experience for every user who visits our platform. With the integration of The Squirrel’s Chatbot, we’ve taken a big step forward in making that happen. The chatbot has been a valuable addition to our website – offering instant responses, guiding users through the donation process, and helping campaigners navigate their fundraising journey.Whether it’s a basic query or a specific support request, the chatbot is available 24/7, ensuring that no question goes unanswered. Its smart, conversational interface makes it easy for users to engage, and we’ve seen a noticeable improvement in user satisfaction and faster resolution times since its launch. We’re glad to have partnered with The Squirrel’s to make Aidcircle more accessible, responsive, and user- friendly for all.",
       rating: 5,
     },
     {
@@ -16,14 +16,6 @@ const TestimonialsSection = () => {
       company: "Social Hardware",
       quote:
         "At Social Hardware, we’ve been using The Squirrel’s chatbot for a while now, and it’s been a great addition to our website. It’s been really helpful in handling those everyday customer questions, and what’s impressed us most is how accurately it answers technical questions about our products and services. This has given our team more time to focus on the bigger-picture tasks. What’s stood out to me is how responsive and supportive The Squirrel’s team has been—they’re quick to answer questions and always willing to make tweaks when we need them. The chatbot does exactly what we need it to do, and it’s been a straightforward, no-fuss solution for us. If you’re looking for a chatbot that’s easy to use, handles technical queries well, and gets the job done, I’d definitely recommend The Squirrel—they’ve been an exceptional partner for us.",
-      rating: 5,
-    },
-    {
-      name: "Emma Rodriguez",
-      role: "Marketing Lead",
-      company: "TravelEasy Agency",
-      quote:
-        "The multi-channel support feature is a game-changer. Our customers can now book trips via WhatsApp or our website with the same seamless experience. Fantastic support too!",
       rating: 5,
     },
   ];
@@ -43,7 +35,7 @@ const TestimonialsSection = () => {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8 animate__animated animate__fadeInUp">
+        <div className="grid md:grid-cols-2 gap-8 animate__animated animate__fadeInUp">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
