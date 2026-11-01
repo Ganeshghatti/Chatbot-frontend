@@ -9,6 +9,7 @@ const host_Grotesk = Host_Grotesk({
 });
 
 export const metadata = {
+  robots: { index: false, follow: false },
   title: "The Squirrel - Smart Chatbot Solutions for Your Business",
   description:
     "Elevate your business with The Squirrel's AI-driven chatbots. Offering ready-made and custom chatbot solutions for engaging, personalized customer interactions.",
